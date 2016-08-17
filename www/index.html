@@ -70,7 +70,7 @@
         <br/>
         <br/>
         <br/>
-        <div align="center"><img src="logo_gp.png" /></div>
+        <div align="center"></div>
     </div>
 </div>
 
@@ -122,8 +122,9 @@
             <input id="rich-autocomplete-input" data-type="search" placeholder="Search Agent">
         </form>
         
-        <ul id="agentList" data-role="listview" data-filter="true" data-inset="true" data-input="#rich-autocomplete-input"></ul>	
-                        
+        <div id="agentListDiv"></div>
+        
+                  
         <div class="errorChk"></div>
             <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
     </div>
@@ -256,7 +257,7 @@
                  
                  <div  data-role="content" style="height:90%" >
                       <a data-role="button" onClick="get_pic_shop_2();" class="ui-btn">Take Picture</a>       
-                        <img id="shop_image_div" height="100px" width="100px"  src="" alt="Place" />
+                        <img id="shop_image_div_2" height="100px" width="100px"  src="" alt="Place" />
                         <input type="hidden" name="shop_image_div_hidden_2" id="shop_image_div_hidden_2" value="" >
 						<input type="hidden" name="shop_image_name_hidden_2" id="shop_image_name_hidden_2" value="" >       
                  </div>
@@ -300,7 +301,7 @@
                     <input type="number" id="competitions_stock" name="competitions_stock" />
                  </li>
                  
-                  <a data-role="button" id="btn_ach_lat_long" onClick="getLocationInfoAchComp();" class="ui-btn" >Confirm Location</a>
+                  <a data-role="button" id="btn_ach_lat_long" onClick="getLocationInfoAch();" class="ui-btn" >Confirm Location</a>
                            
             </ul>
         

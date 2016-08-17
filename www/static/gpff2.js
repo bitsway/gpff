@@ -142,32 +142,41 @@ function menuClick(){
 	}
 //----------------back button
 function backClick(){
+	
 	$(".errorChk").text("");
 	}
 
 
 function agentList(){ 
+ 
 	var agentListStr="";
 	 	//alert(apipath+'agent_list?cid=GPFF2&sync_code='+localStorage.sync_code+'&mobile_no='+localStorage.mobile_no);
 		$.ajax({
 			  url:apipath+'agent_list?cid=GPFF2&sync_code='+localStorage.sync_code+'&mobile_no='+localStorage.mobile_no,
 			  success: function(resStr) {	
+				  
 				  agentListStr=resStr.split("<fd>");
-				  //alert(agentListStr);
-				  var agentListS='';
+				  
+				  var agentListS='<ul data-role="listview" data-filter="true" data-inset="true" data-input="#rich-autocomplete-input">';
 				  
 				  for (i=0;i<agentListStr.length;i++){
-					  agentList=agentListStr[i].split("<fdfd>");
+					  agentLi=agentListStr[i].split("<fdfd>");
 					  
-					  for (j=0;j<agentList.length;j++){
-						  agentListS+='<li style="margin-bottom:1px;" onClick="agentListPage2(\''+agentList[0]+'\')" ><a>'+agentList[0]+'</a></li>' 
+					  for (j=0;j<agentLi.length;j++){
+						  agentListS+='<li style="margin-bottom:1px;" onClick="agentListPage2(\''+agentLi[0]+'\')" ><a>'+agentLi[0]+'</a></li>' 
 						  }
 					  
 				  	  				  				  
 				  }	
+				  agentListS+='</ul>';
 				  
-				  			  
-				  $("#agentList").html(agentListS);
+				$('#agentListDiv').empty();
+				$('#agentListDiv').append(agentListS).trigger('create');
+				 
+				
+							  
+				  //$("#agentListDiv").html(agentListS);
+				  
 				  //localStorage.agentListS=agentListS;	
 				  url="#first_page";					
 				  $.mobile.navigate(url);
@@ -183,6 +192,11 @@ function agentListPage2(agent){
 	//alert(localStorage.agent);
 	
 	$("#showAgentName").html(localStorage.agent);
+	
+	var agentIdName=localStorage.agent.split('-');
+	localStorage.agentID=agentIdName[0];
+	localStorage.agentName=agentIdName[1];
+	
 	url="#agentPage2";					
 	$.mobile.navigate(url);
 
@@ -299,22 +313,22 @@ function agentNextPage4(){
 
 
 //======shop
-/*function get_pic_shop_2() {
-	var tempTime = $.now();
+function get_pic_shop_2() {
+	/*var tempTime = $.now();
 	shop_image_name=tempTime.toString()+"_shop.jpg";
 	$("#shop_image_name_hidden").val(shop_image_name);
-	$("#shop_image_div_hidden").val(shop_image_name);
-	navigator.camera.getPicture(onSuccessShop, onFailShop, { quality: 70,
+	$("#shop_image_div_hidden").val(shop_image_name);*/
+	navigator.camera.getPicture(onSuccessShop2, onFailShop2, { quality: 70,
 		targetWidth: 450,
 		destinationType: Camera.DestinationType.FILE_URI , correctOrientation: true });
 }
-function onSuccessShop(imageURI) {
-	var image = document.getElementById('shop_image_div');
+function onSuccessShop2(imageURI) {
+	var image = document.getElementById('shop_image_div_2');
     image.src = imageURI;
-    var hidden_path="shop_image_div_hidden";
+    var hidden_path="shop_image_div_hidden_2";
 	$("#"+hidden_path).val(imageURI);
 }
-function onFailShop(message) {
+function onFailShop2(message) {
 	imagePathB="";
     alert('Failed because: ' + message);
 }
@@ -339,10 +353,6 @@ function uploadPhoto(imageURI, imageName) {
  ft.upload(imageURI, encodeURI("http://a.businesssolutionapps.com/mrepimage/syncmobile/fileUploader/"),win,fail,options);
 }
 //===========
-
-
-*/
-
 
 
 
@@ -387,16 +397,17 @@ function agentSubmit(){
 			$(".errorChk").text("Required Other Competitions Stock");
 				
 		}else{
-			//alert(apipath+"submitData_visit_report?cid=GPFF2&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&ava_stock='+ava_stock+'&stock_req='+stock_req+'&competitions_stock='+competitions_stock+'&agentPage3='+agentPage3+'&agentPage4='+agentPage4);
+			//alert(apipath+"submitData_visit_report?cid=GPFF2&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&ava_stock='+ava_stock+'&stock_req='+stock_req+'&competitions_stock='+competitions_stock+'&agentPage3='+agentPage3+'&agentPage4='+agentPage4+'&agentID='+localStorage.agentID+'&agentName='+localStorage.agentName);
 			
 			$.ajax({
 					type: 'POST',
-					url:apipath+"submitData_visit_report?cid=GPFF2&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&ava_stock='+ava_stock+'&stock_req='+stock_req+'&competitions_stock='+competitions_stock+'&agentPage3='+agentPage3+'&agentPage4='+agentPage4,
+					url:apipath+"submitData_visit_report?cid=GPFF2&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&ava_stock='+ava_stock+'&stock_req='+stock_req+'&competitions_stock='+competitions_stock+'&agentPage3='+agentPage3+'&agentPage4='+agentPage4+'&agentID='+localStorage.agentID+'&agentName='+localStorage.agentName,
 			
 			
 						success: function(result) {
 						   if(result=='Success'){							
 							//alert(result)
+							
 							
 							$("#posm_materials").val("");
 							$("#other_posm_materials").val("");
@@ -407,7 +418,8 @@ function agentSubmit(){
 							
 							$(".sucChk").text('Successfully Submitted');
 							$(".errorChk").text("");
-							$("#btn_pmt_submit").show();						
+							$("#btn_pmt_submit").show();	
+											
 						}else{
 							$(".errorChk").text('Unauthorized Access');																	
 							$("#btn_pmt_submit").show();
